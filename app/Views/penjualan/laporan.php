@@ -1,85 +1,88 @@
 <?= $this->extend('layout/template'); ?>
 
 <?= $this->section('content'); ?>
-<div class="container mt-4">
-    <div class="row">
-        <div class="col">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">
-                        <i class="fas fa-file-alt me-2"></i>Laporan Penjualan
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <!-- Filter Tanggal -->
-                    <form action="" method="get" class="row mb-4">
-                        <div class="col-md-4">
-                            <label for="tanggal_awal" class="form-label">Tanggal Awal</label>
-                            <input type="date" class="form-control" id="tanggal_awal" name="tanggal_awal" 
-                                   value="<?= $tanggal_awal; ?>">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="tanggal_akhir" class="form-label">Tanggal Akhir</label>
-                            <input type="date" class="form-control" id="tanggal_akhir" name="tanggal_akhir" 
-                                   value="<?= $tanggal_akhir; ?>">
-                        </div>
-                        <div class="col-md-4 d-flex align-items-end">
-                            <button type="submit" class="btn btn-primary me-2">
-                                <i class="fas fa-search me-1"></i> Filter
-                            </button>
-                            <button type="button" class="btn btn-success" onclick="window.print()">
-                                <i class="fas fa-print me-1"></i> Cetak
-                            </button>
-                        </div>
-                    </form>
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow-sm border-0 rounded-4">
+                    <div class="card-header bg-primary text-white rounded-top-4 d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0 fw-semibold">
+                            <i class="fas fa-file-alt me-2"></i>Laporan Penjualan
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Filter Tanggal -->
+                        <form action="" method="get" class="row mb-4">
+                            <div class="col-md-4">
+                                <label for="tanggal_awal" class="form-label">Tanggal Awal</label>
+                                <input type="date" class="form-control rounded-pill" id="tanggal_awal" name="tanggal_awal" 
+                                       value="<?= $tanggal_awal; ?>">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="tanggal_akhir" class="form-label">Tanggal Akhir</label>
+                                <input type="date" class="form-control rounded-pill" id="tanggal_akhir" name="tanggal_akhir" 
+                                       value="<?= $tanggal_akhir; ?>">
+                            </div>
+                            <div class="col-md-4 d-flex align-items-end">
+                                <button type="submit" class="btn btn-primary rounded-pill me-2 shadow-sm">
+                                    <i class="fas fa-search me-1"></i> Filter
+                                </button>
+                                <button type="button" class="btn btn-success rounded-pill shadow-sm" onclick="window.print()">
+                                    <i class="fas fa-print me-1"></i> Cetak
+                                </button>
+                            </div>
+                        </form>
 
-                    <!-- Tabel Laporan -->
-                    <div class="table-responsive">
-                        <table class="table table-hover" id="dataTable">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Tanggal</th>
-                                    <th>Total Item</th>
-                                    <th>Total Harga</th>
-                                    <th>Pembayaran</th>
-                                    <th>Kembalian</th>
-                                    <th>Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php $i = 1; ?>
-                                <?php foreach ($penjualan as $p) : ?>
+                        <!-- Tabel Laporan -->
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle" id="dataTable">
+                                <thead class="table-light">
                                     <tr>
-                                        <td><?= $i++; ?></td>
-                                        <td><?= date('d/m/Y H:i', strtotime($p['tanggal'])); ?></td>
-                                        <td><?= $p['total_item']; ?> item</td>
-                                        <td>Rp <?= number_format($p['total_harga'], 0, ',', '.'); ?></td>
-                                        <td>Rp <?= number_format($p['uang_dibayar'], 0, ',', '.'); ?></td>
-                                        <td>Rp <?= number_format($p['kembalian'], 0, ',', '.'); ?></td>
-                                        <td>
-                                            <button type="button" class="btn btn-info btn-sm" 
-                                                    onclick="showDetail(<?= $p['id_penjualan']; ?>)">
-                                                <i class="fas fa-eye"></i>
-                                            </button>
-                                        </td>
+                                        <th>No</th>
+                                        <th>Tanggal</th>
+                                        <th>Total Item</th>
+                                        <th>Total Harga</th>
+                                        <th>Pembayaran</th>
+                                        <th>Kembalian</th>
+                                        <th>Aksi</th>
                                     </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                            <tfoot>
-                                <tr class="table-primary">
-                                    <th colspan="3">Total Penjualan</th>
-                                    <th>Rp <?= number_format(array_sum(array_column($penjualan, 'total_harga')), 0, ',', '.'); ?></th>
-                                    <th colspan="3"></th>
-                                </tr>
-                            </tfoot>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    <?php $i = 1; ?>
+                                    <?php foreach ($penjualan as $p) : ?>
+                                        <tr>
+                                            <td><?= $i++; ?></td>
+                                            <td><?= date('d/m/Y H:i', strtotime($p['tanggal'])); ?></td>
+                                            <td><?= $p['total_item']; ?> item</td>
+                                            <td>Rp <?= number_format($p['total_harga'], 0, ',', '.'); ?></td>
+                                            <td>Rp <?= number_format($p['uang_dibayar'], 0, ',', '.'); ?></td>
+                                            <td>Rp <?= number_format($p['kembalian'], 0, ',', '.'); ?></td>
+                                            <td>
+                                                <button type="button" class="btn btn-info btn-sm rounded-pill shadow-sm" 
+                                                        onclick="showDetail(<?= $p['id_penjualan']; ?>)">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                                <tfoot>
+                                    <tr class="table-primary">
+                                        <th colspan="3">Total Penjualan</th>
+                                        <th>Rp <?= number_format(array_sum(array_column($penjualan, 'total_harga')), 0, ',', '.'); ?></th>
+                                        <th colspan="3"></th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<?= $this->endSection(); ?>
 
 <!-- Modal Detail Penjualan -->
 <div class="modal fade" id="modalDetail" tabindex="-1">
@@ -147,5 +150,3 @@ async function showDetail(id_penjualan) {
     }
 }
 </script>
-
-<?= $this->endSection(); ?> 
