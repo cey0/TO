@@ -1,75 +1,49 @@
 <?= $this->extend('layout/template'); ?>
 
 <?= $this->section('content'); ?>
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-md-8">
-            <div class="card shadow mb-4">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0"><i class="fas fa-shopping-cart me-2"></i>Transaksi Penjualan</h5>
-                </div>
-                <div class="card-body">
-                    <form id="formTransaksi">
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="kode_barang">Kode Barang</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" id="kode_barang" required>
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalBarang">
-                                        <i class="fas fa-search"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="nama_barang">Nama Barang</label>
-                                <input type="text" class="form-control" id="nama_barang" readonly>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-4">
-                                <label for="harga">Harga</label>
-                                <input type="number" class="form-control" id="harga" readonly>
-                            </div>
-                            <div class="col-md-4">
-                                <label for="diskon">Diskon (%)</label>
-                                <input type="number" class="form-control" id="diskon" readonly>
-                            </div>
-                            <div class="col-md-4">
-                                <label for="jumlah">Jumlah</label>
-                                <input type="number" class="form-control" id="jumlah" min="1" value="1">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-plus"></i> Tambah
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+<!-- Search Bar -->
+<div class="search-bar">
+    <input type="text" placeholder="Search for food..." id="searchInput">
+</div>
 
-                    <div class="table-responsive mt-4">
-                        <table class="table table-bordered table-hover">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>No</th>
-                                    <th>Kode</th>
-                                    <th>Nama Barang</th>
-                                    <th>Harga</th>
-                                    <th>Diskon</th>
-                                    <th>Jumlah</th>
-                                    <th>Subtotal</th>
-                                    <th>Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody id="detail_transaksi">
-                                <!-- Data akan diisi dengan JavaScript -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+<!-- Category Section -->
+<div class="category-section">
+    <h2 class="category-title">Categories</h2>
+    <div class="category-icons">
+        <div class="category-icon active">
+            <i class="fas fa-hamburger"></i>
+        </div>
+        <div class="category-icon">
+            <i class="fas fa-pizza-slice"></i>
+        </div>
+        <div class="category-icon">
+            <i class="fas fa-ice-cream"></i>
+        </div>
+        <div class="category-icon">
+            <i class="fas fa-utensils"></i>
+        </div>
+    </div>
+</div>
+
+<!-- Menu Grid -->
+<div class="menu-grid">
+    <?php foreach ($barang as $b) : ?>
+    <div class="menu-item" data-kode="<?= $b['kode_barang']; ?>">
+        <img src="<?= base_url('uploads/barang/' . ($b['gambar'] ?? 'default.jpg')); ?>" alt="<?= $b['nama_barang']; ?>">
+        <div class="menu-item-content">
+            <h3 class="menu-item-title"><?= $b['nama_barang']; ?></h3>
+            <div class="d-flex justify-content-between align-items-center">
+                <span class="menu-item-price">Rp <?= number_format($b['harga_jual'], 0, ',', '.'); ?></span>
+                <button class="btn btn-primary btn-sm add-to-cart" 
+                        onclick="addToCart('<?= $b['kode_barang']; ?>', '<?= $b['nama_barang']; ?>', 
+                                         <?= $b['harga_jual']; ?>, <?= isset($b['diskon']) ? $b['diskon'] : 0; ?>)">
+                    <i class="fas fa-plus"></i>
+                </button>
             </div>
         </div>
+    </div>
+    <?php endforeach; ?>
+</div>
 
         <div class="col-md-4">
             <div class="card shadow">
@@ -403,4 +377,4 @@ $(document).ready(function() {
     $('#tableBarang').DataTable();
 });
 </script>
-<?= $this->endSection(); ?> 
+<?= $this->endSection(); ?>
