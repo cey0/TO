@@ -158,16 +158,16 @@ body {
 
 /* Cart Section */
 .cart-section {
-  display: block;
+  display: none; /* Hide by default, will be shown via JavaScript */
   position: fixed;
   right: 20px;
   top: 20px;
   width: 300px;
   max-height: 90vh;
   background: white;
-  padding: 15px;
+  padding: 20px;
   border-radius: var(--border-radius);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   z-index: 1001;
   overflow-y: auto;
 }
@@ -242,15 +242,16 @@ body {
 }
 
 .checkout-btn {
-  background: var(--primary-color);
+  background: #4B5D7E;
   color: white;
   border: none;
   width: 100%;
-  padding: 15px;
+  padding: 12px;
   border-radius: var(--border-radius);
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.2s;
+  margin-top: 10px;
 }
 
 .checkout-btn:hover {

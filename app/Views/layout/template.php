@@ -54,20 +54,7 @@
         <?= $this->renderSection('content'); ?>
     </div>
 
-    <!-- Cart Section -->
-    <div class="cart-section">
-        <h2 class="cart-title">Cart</h2>
-        <div class="cart-items">
-            <!-- Cart items will be dynamically added here -->
-        </div>
-        <div class="cart-summary">
-            <div class="cart-total">
-                <span>Total</span>
-                <span>Rp. 0</span>
-            </div>
-            <button class="checkout-btn">Checkout</button>
-        </div>
-    </div>
+    <!-- Cart will be shown only in penjualan page -->
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

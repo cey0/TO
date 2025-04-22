@@ -2,12 +2,24 @@
 let cartItems = [];
 let total = 0;
 
-// Show cart on page load
+// Show cart only on penjualan page
 document.addEventListener('DOMContentLoaded', function() {
-    const cartSection = document.querySelector('.cart-section');
-    if (cartSection) {
-        cartSection.style.display = 'block';
-    }
+    // Check if we're on the penjualan page by looking for menu-grid
+    const isPenjualanPage = document.querySelector('.menu-grid') !== null;
+    
+    // Get all cart sections
+    const cartSections = document.querySelectorAll('.cart-section');
+    
+    // Only show the cart in the penjualan page content area
+    cartSections.forEach((cartSection, index) => {
+        // Only show the first cart on penjualan page
+        if (isPenjualanPage && index === 0) {
+            cartSection.style.display = 'block';
+        } else {
+            cartSection.style.display = 'none';
+        }
+    });
+    
     updateCart();
 });
 
@@ -98,8 +110,17 @@ document.querySelector('.checkout-btn').addEventListener('click', function() {
     
     // Prepare transaction data
     const transactionData = {
-        items: cartItems,
-        total: total
+        total_harga: total,
+        uang_dibayar: total, // Assuming direct payment without change
+        kembalian: 0,
+        items: cartItems.map(item => ({
+            kode: item.kodeBarang,
+            nama: item.namaBarang,
+            harga: item.harga,
+            diskon: item.diskon,
+            jumlah: item.quantity,
+            subtotal: item.subtotal
+        }))
     };
     
     // Send to server
@@ -114,9 +135,15 @@ document.querySelector('.checkout-btn').addEventListener('click', function() {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
+            // Show success message
             alert('Transaction completed successfully!');
+            
+            // Clear cart
             cartItems = [];
             updateCart();
+            
+            // Optionally show receipt/struk
+            showReceipt(transactionData);
         } else {
             alert('Error processing transaction. Please try again.');
         }
@@ -126,6 +153,33 @@ document.querySelector('.checkout-btn').addEventListener('click', function() {
         alert('Error processing transaction. Please try again.');
     });
 });
+
+// Show receipt after successful transaction
+function showReceipt(transactionData) {
+    // Set receipt data
+    document.getElementById('struk-tanggal').textContent = new Date().toLocaleString('id-ID');
+    document.getElementById('struk-total').textContent = `Rp ${transactionData.total_harga.toLocaleString()}`;
+    document.getElementById('struk-bayar').textContent = `Rp ${transactionData.uang_dibayar.toLocaleString()}`;
+    document.getElementById('struk-kembali').textContent = `Rp ${transactionData.kembalian.toLocaleString()}`;
+    
+    // Generate receipt items
+    let strukItems = '';
+    transactionData.items.forEach(item => {
+        strukItems += `
+            <tr>
+                <td colspan="2">${item.nama}</td>
+            </tr>
+            <tr>
+                <td>${item.jumlah} x Rp ${(item.harga - (item.harga * item.diskon / 100)).toLocaleString()}</td>
+                <td align="right">Rp ${item.subtotal.toLocaleString()}</td>
+            </tr>
+        `;
+    });
+    document.getElementById('struk-items').innerHTML = strukItems;
+    
+    // Show receipt modal
+    new bootstrap.Modal(document.getElementById('modalStruk')).show();
+}
 
 // Search functionality
 document.getElementById('searchInput').addEventListener('input', function(e) {

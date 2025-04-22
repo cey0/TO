@@ -45,30 +45,21 @@
     <?php endforeach; ?>
 </div>
 
-        <div class="col-md-4">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0"><i class="fas fa-money-bill-wave me-2"></i>Pembayaran</h5>
-                </div>
-                <div class="card-body">
-                    <div class="mb-3">
-                        <label for="total" class="form-label">Total</label>
-                        <input type="text" class="form-control form-control-lg" id="total" readonly>
-                    </div>
-                    <div class="mb-3">
-                        <label for="bayar" class="form-label">Bayar</label>
-                        <input type="number" class="form-control form-control-lg" id="bayar">
-                    </div>
-                    <div class="mb-3">
-                        <label for="kembali" class="form-label">Kembali</label>
-                        <input type="text" class="form-control form-control-lg" id="kembali" readonly>
-                    </div>
-                    <button type="button" class="btn btn-success btn-lg w-100" id="btnSimpan">
-                        <i class="fas fa-save me-2"></i>Simpan Transaksi
-                    </button>
-                </div>
-            </div>
+    </div>
+</div>
+
+<!-- Cart Section -->
+<div class="cart-section">
+    <h3 class="cart-title">Cart</h3>
+    <div class="cart-items">
+        <!-- Cart items will be added here dynamically -->
+    </div>
+    <div class="cart-summary">
+        <div class="cart-total">
+            <span>Total</span>
+            <span>Rp. 0</span>
         </div>
+        <button class="checkout-btn">Checkout</button>
     </div>
 </div>
 
@@ -305,17 +296,8 @@ function hapusItem(index) {
     hitungTotal();
 }
 
-// Simpan transaksi
-document.getElementById('btnSimpan').addEventListener('click', async function() {
-    const bayar = parseFloat(document.getElementById('bayar').value) || 0;
-    if (items.length === 0) {
-        alert('Keranjang masih kosong!');
-        return;
-    }
-    if (bayar < total) {
-        alert('Pembayaran kurang!');
-        return;
-    }
+// Simpan transaksi - Diganti dengan fungsi checkout di cart.js
+// Kode lama dihapus karena sudah diganti dengan implementasi baru di cart.js
     
     try {
         const response = await fetch('/penjualan/save', {
